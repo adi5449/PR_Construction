@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+  <title>PR Constructions · Rohit Goud · Pune</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --gold: #c9a96e;
+      --gold-dim: rgba(201,169,110,0.2);
+      --dark: #080b10;
+      --text: #eef3f8;
+      --muted: #9aabbe;
+      --border: rgba(201,169,110,0.25);
+    }
+    body {
+      background: var(--dark);
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text);
+      background-image: radial-gradient(circle at 20% 30%, #1e293b 0%, #0a0d14 100%);
+    }
+    h1,h2,h3,.serif { font-family: 'Cormorant Garamond', serif; font-weight:400; }
+    .gold { color:var(--gold); }
+    .container { max-width:1400px; margin:0 auto; padding:0 24px; }
+
+    /* navbar */
+    .navbar {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:18px 32px; background:rgba(8,11,16,0.9); backdrop-filter:blur(20px);
+      border-bottom:1px solid var(--border); position:sticky; top:0; z-index:99;
+      flex-wrap:wrap;
+    }
+    .logo {
+      font-family:'Cormorant Garamond',serif; font-size:2rem;
+      display:flex; align-items:baseline; gap:6px;
+    }
+    .logo-pr {
+      background:linear-gradient(135deg,#e8d5b0,#c9a96e); -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    }
+    .logo-sub { color:#9fb0c9; font-size:1rem; font-weight:300; }
+    .nav-links { display:flex; gap:36px; text-transform:uppercase; letter-spacing:0.15em; font-size:0.8rem; }
+    .nav-links a { color:#cbd5e6; transition:0.2s; }
+    .nav-links a.active, .nav-links a:hover { color:#fff; border-bottom:2px solid var(--gold); padding-bottom:4px; }
+    .nav-cta {
+      border:1.5px solid var(--gold); border-radius:50px; padding:8px 26px;
+      color:var(--gold); font-size:0.8rem; text-transform:uppercase; transition:0.3s;
+    }
+    .nav-cta:hover { background:var(--gold); color:#000; }
+    .hamburger { display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; }
+    .hamburger span { width:26px; height:2px; background:var(--gold); transition:0.3s; }
+    .mobile-menu { display:none; flex-direction:column; background:rgba(8,11,16,0.98); padding:20px 24px; border-bottom:1px solid var(--border); }
+    .mobile-menu.open { display:flex; }
+    .mobile-menu a { padding:14px 0; border-bottom:1px solid rgba(255,255,255,0.05); color:#e0ecff; }
+
+    /* page system */
+    .page { display:none; animation:fade 0.3s; }
+    .page.active-page { display:block; }
+    @keyframes fade { from {opacity:0.2; transform:translateY(12px);} to {opacity:1; transform:none;} }
+
+    .page-section { padding:70px 0 50px; }
+    .section-tag {
+      font-size:0.7rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold); margin-bottom:14px; display:block;
+    }
+
+    /* buttons */
+    .btn {
+      display:inline-flex; align-items:center; gap:8px; padding:12px 30px; border-radius:50px;
+      font-size:0.8rem; font-weight:600; text-transform:uppercase; letter-spacing:0.12em;
+      transition:0.25s; cursor:pointer; border:none;
+    }
+    .btn-gold { background:var(--gold); color:#0b0e14; }
+    .btn-gold:hover { background:#e0bc80; box-shadow:0 8px 24px rgba(201,169,110,0.4); }
+    .btn-outline { background:transparent; border:1.5px solid var(--gold); color:var(--gold); }
+    .btn-outline:hover { background:var(--gold); color:#000; }
+
+    /* hero */
+    .hero { display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center; padding:40px 0 80px; }
+    .hero-eyebrow {
+      display:inline-flex; align-items:center; gap:10px; background:rgba(201,169,110,0.08); border:1px solid var(--border);
+      border-radius:50px; padding:6px 20px; font-size:0.7rem; text-transform:uppercase; color:var(--gold); margin-bottom:24px;
+    }
+    .hero-title { font-size:clamp(2.8rem,6vw,5rem); line-height:1; color:#f0ece7; }
+    .hero-title .accent { background:linear-gradient(135deg,#f0e2c8,#c9a96e); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .hero-desc { font-size:1.1rem; color:var(--muted); border-left:3px solid var(--gold); padding-left:20px; margin:28px 0; max-width:90%; }
+    .hero-stats { display:flex; gap:40px; margin-top:40px; flex-wrap:wrap; }
+    .stat-item h3 { font-size:2.2rem; font-family:'Cormorant Garamond',serif; color:#eedbba; }
+    .hero-main-img { border-radius:40px; overflow:hidden; height:500px; border:1px solid var(--border); box-shadow:0 40px 70px -25px #000; }
+    .hero-main-img img { width:100%; height:100%; object-fit:cover; }
+
+    /* marquee */
+    .marquee-wrap {
+      border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:18px 0; margin:20px 0;
+      overflow:hidden; background:rgba(0,0,0,0.25);
+    }
+    .marquee-track { display:flex; gap:60px; white-space:nowrap; animation:marquee 26s linear infinite; width:max-content; }
+    .marquee-track span { font-size:0.8rem; text-transform:uppercase; color:var(--muted); letter-spacing:0.15em; }
+    .marquee-track .dot { color:var(--gold); font-size:1.2rem; }
+    @keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+    /* service / project grids */
+    .service-grid, .values-grid {
+      display:grid; grid-template-columns:repeat(4,1fr); gap:24px; margin-top:40px;
+    }
+    .service-card, .value-card {
+      background:rgba(14,18,25,0.7); backdrop-filter:blur(8px); border-radius:28px;
+      border:1px solid rgba(255,255,255,0.05); overflow:hidden; transition:0.2s;
+    }
+    .service-card:hover { border-color:var(--gold); transform:translateY(-6px); }
+    .service-img { height:180px; overflow:hidden; }
+    .service-img img { width:100%; height:100%; object-fit:cover; transition:0.4s; }
+    .service-card:hover img { transform:scale(1.05); }
+    .service-body { padding:24px; }
+    .service-icon { font-size:1.8rem; color:var(--gold); margin-bottom:12px; }
+    .service-card h3 { font-size:1.3rem; font-family:'Cormorant Garamond',serif; margin-bottom:6px; }
+
+    /* GALLERY — MANY NEW BUILDING IMAGES, FULL VISIBILITY */
+    .gallery-filters {
+      display:flex; gap:12px; flex-wrap:wrap; margin:40px 0 30px;
+    }
+    .filter-btn {
+      background:rgba(255,255,255,0.03); border:1px solid #3a4353; border-radius:40px;
+      padding:7px 24px; font-size:0.8rem; text-transform:uppercase; color:var(--muted); cursor:pointer; transition:0.2s;
+    }
+    .filter-btn.active, .filter-btn:hover { background:var(--gold-dim); border-color:var(--gold); color:var(--gold); }
+
+    .gallery-masonry {
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:24px;
+    }
+    .gallery-card {
+      background:rgba(14,18,25,0.9); border-radius:28px; border:1px solid rgba(201,169,110,0.25);
+      overflow:hidden; cursor:pointer; transition:0.3s; backdrop-filter:blur(4px);
+      display:flex; flex-direction:column;
+    }
+    .gallery-card:hover { border-color:var(--gold); transform:scale(1.02) translateY(-5px); box-shadow:0 30px 45px -20px #000; }
+    .gallery-img {
+      height:260px; overflow:hidden; position:relative;
+    }
+    .gallery-card.tall .gallery-img { height:360px; }
+    .gallery-img img { width:100%; height:100%; object-fit:cover; transition:0.5s; }
+    .gallery-card:hover .gallery-img img { transform:scale(1.06); }
+    .gallery-overlay {
+      position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,0.8), transparent 60%);
+      display:flex; align-items:flex-end; justify-content:flex-end; padding:18px; opacity:0; transition:0.3s;
+    }
+    .gallery-card:hover .gallery-overlay { opacity:1; }
+    .expand-btn {
+      width:42px; height:42px; background:rgba(201,169,110,0.9); border-radius:50%;
+      display:flex; align-items:center; justify-content:center; color:#000; font-size:1rem;
+    }
+    .gallery-card-body {
+      padding:18px 18px 20px;
+    }
+    .gallery-card-body h3 { font-size:1.4rem; font-family:'Cormorant Garamond',serif; margin-bottom:4px; }
+    .g-tag {
+      background:rgba(201,169,110,0.12); border:1px solid var(--border); color:var(--gold);
+      font-size:0.7rem; border-radius:40px; padding:4px 16px; display:inline-block; margin-top:8px;
+    }
+
+    /* about page */
+    .about-hero { display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center; }
+    .about-portrait { border-radius:40px; overflow:hidden; height:480px; border:1px solid var(--gold); }
+    .about-portrait img { width:100%; height:100%; object-fit:cover; }
+    .value-card { padding:32px 24px; text-align:center; }
+    .value-card i { font-size:2rem; color:var(--gold); margin-bottom:14px; }
+    .address-block { background:rgba(201,169,110,0.07); border-left:4px solid var(--gold); padding:18px 24px; border-radius:20px; margin:24px 0; }
+
+    /* contact */
+    .contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:40px; margin-top:40px; }
+    .contact-card {
+      background:rgba(14,18,25,0.8); border-radius:44px; padding:44px 38px;
+      border:1px solid #4a4f58; backdrop-filter:blur(10px);
+    }
+    .contact-row { display:flex; gap:18px; margin-bottom:30px; }
+    .contact-row i { font-size:1.8rem; color:var(--gold); min-width:40px; }
+    .contact-scape { border-radius:44px; overflow:hidden; border:1px solid #6a5e4a; min-height:420px; }
+    .contact-scape img { width:100%; height:100%; object-fit:cover; }
+
+    /* footer */
+    footer { border-top:1px solid var(--border); margin-top:70px; padding:60px 0 30px; }
+    .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1.5fr; gap:40px; margin-bottom:50px; }
+    .footer-links { list-style:none; } .footer-links li { margin-bottom:12px; }
+    .footer-links a { color:#8f9fb0; text-decoration:none; }
+    .copyright { text-align:center; color:#5a6c80; font-size:0.75rem; letter-spacing:0.15em; }
+
+    /* lightbox */
+    .lightbox {
+      display:none; position:fixed; inset:0; background:rgba(0,0,0,0.96); backdrop-filter:blur(18px);
+      z-index:1000; align-items:center; justify-content:center; flex-direction:column;
+    }
+    .lightbox.open { display:flex; }
+    .lightbox-close { position:absolute; top:20px; right:30px; font-size:3rem; color:var(--gold); cursor:pointer; z-index:1001; }
+    .lightbox-prev, .lightbox-next {
+      position:absolute; top:50%; transform:translateY(-50%);
+      font-size:3rem; color:var(--gold); cursor:pointer; padding:0 20px; z-index:1001;
+    }
+    .lightbox-prev { left:10px; } .lightbox-next { right:10px; }
+    .lightbox-img { max-width:1000px; width:90%; max-height:70vh; object-fit:contain; border-radius:32px; }
+    .lightbox-caption { margin-top:20px; color:white; font-family:'Cormorant Garamond',serif; font-size:1.6rem; }
+
+    /* responsive */
+    @media (max-width:1000px){
+      .nav-links, .nav-cta { display:none; }
+      .hamburger { display:flex; }
+      .hero, .about-hero, .contact-grid { grid-template-columns:1fr; }
+      .service-grid, .values-grid { grid-template-columns:repeat(2,1fr); }
+      .gallery-masonry { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:650px){
+      .service-grid, .values-grid, .gallery-masonry { grid-template-columns:1fr; }
+      .footer-grid { grid-template-columns:1fr; }
+      .hero-main-img { height:320px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<div class="navbar">
+  <div class="logo"><span class="logo-pr">PR</span> <span class="logo-sub">constructions</span></div>
+  <div class="nav-links">
+    <a href="#" class="nav-link active" data-page="home">Home</a>
+    <a href="#" class="nav-link" data-page="gallery">Gallery</a>
+    <a href="#" class="nav-link" data-page="about">About</a>
+    <a href="#" class="nav-link" data-page="contact">Contact</a>
+  </div>
+  <a href="#" class="nav-cta nav-link" data-page="contact"><i class="fas fa-pen"></i> Inquiry</a>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</div>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#" class="nav-link active" data-page="home">Home</a>
+  <a href="#" class="nav-link" data-page="gallery">Gallery</a>
+  <a href="#" class="nav-link" data-page="about">About</a>
+  <a href="#" class="nav-link" data-page="contact">Contact</a>
+</div>
+
+<!-- LIGHTBOX (enhanced) -->
+<div class="lightbox" id="lightbox">
+  <span class="lightbox-close" id="lbClose">&times;</span>
+  <span class="lightbox-prev" id="lbPrev">‹</span>
+  <span class="lightbox-next" id="lbNext">›</span>
+  <img class="lightbox-img" id="lbImg" src="" alt="">
+  <div class="lightbox-caption" id="lbCaption"></div>
+</div>
+
+<!-- MAIN CONTAINER -->
+<main id="page-container" class="container">
+
+  <!-- HOME page -->
+  <div id="home" class="page active-page">
+    <section class="hero">
+      <div>
+        <div class="hero-eyebrow"><i class="fas fa-helmet-safety"></i> Est. 1996 · Pune, India</div>
+        <h1 class="hero-title"><span class="accent">Build</span> beyond<br>the blueprint.</h1>
+        <p class="hero-desc">Where raw materials meet poetic geometry. PR Constructions shapes skylines with integrity, precision & soul.</p>
+        <div class="hero-btns">
+          <a href="#" class="btn btn-gold nav-link" data-page="gallery"><i class="fas fa-building"></i> Explore Gallery</a>
+          <a href="#" class="btn btn-outline nav-link" data-page="about"><i class="fas fa-play"></i> Our Story</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item"><h3>38+</h3><p>Landmarks</p></div>
+          <div class="stat-item"><h3>14</h3><p>Awards</p></div>
+          <div class="stat-item"><h3>3</h3><p>Decades</p></div>
+        </div>
+      </div>
+      <div class="hero-main-img">
+        <img src="https://images.pexels.com/photos/323705/pexels-photo-323705.jpeg?auto=compress&cs=tinysrgb&w=800&dpr=2" alt="PR tower" loading="lazy">
+      </div>
+    </section>
+
+    <div class="marquee-wrap">
+      <div class="marquee-track">
+        <span>Pune</span><span class="dot">✦</span><span>Mumbai</span><span class="dot">✦</span><span>Delhi</span><span class="dot">✦</span><span>Dubai</span><span class="dot">✦</span><span>Singapore</span><span class="dot">✦</span><span>New York</span><span class="dot">✦</span><span>London</span><span class="dot">✦</span><span>Pune</span><span class="dot">✦</span><span>Mumbai</span>
+      </div>
+    </div>
+
+    <section class="page-section">
+      <h2>Our <span class="gold">disciplines</span></h2>
+      <div class="service-grid">
+        <div class="service-card"><div class="service-img"><img src="https://images.pexels.com/photos/159306/construction-site-build-construction-work-159306.jpeg?auto=compress&cs=tinysrgb&w=800&dpr=2" loading="lazy"></div><div class="service-body"><i class="fas fa-mountain-city service-icon"></i><h3>Master Plan</h3><p>Contextual architecture</p></div></div>
+        <div class="service-card"><div class="service-img"><img src="https://images.pexels.com/photos/442579/pexels-photo-442579.jpeg?auto=compress&cs=tinysrgb&w=800&dpr=2" loading="lazy"></div><div class="service-body"><i class="fas fa-bridge-water service-icon"></i><h3>Infrastructure</h3><p>Bridges & transit</p></div></div>
+        <div class="service-card"><div class="service-img"><img src="https://images.pexels.com/photos/276724/pexels-photo-276724.jpeg?auto=compress&cs=tinysrgb&w=800&dpr=2" loading="lazy"></div><div class="service-body"><i class="fas fa-landmark service-icon"></i><h3>Heritage+</h3><p>Restoration</p></div></div>
+        <div class="service-card"><div class="service-img"><img src="https://images.pexels.com/photos/1732414/pexels-photo-1732414.jpeg?auto=compress&cs=tinysrgb&w=800&dpr=2" loading="lazy"></div><div class="service-body"><i class="fas fa-building-columns service-icon"></i><h3>High‑Rise</h3><p>Vertical poetry</p></div></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- GALLERY PAGE – now with 12+ building images, fully visible -->
+  <div id="gallery" class="page">
+    <section class="page-section">
+      <span class="section-tag">curated portfolio</span>
+      <h2>Concrete & <span class="gold">light</span></h2>
+      <p style="color:var(--muted); max-width:600px;">A selection of our finest building works – click any image for full view.</p>
+
+      <div class="gallery-filters">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="cultural">Cultural</button>
+        <button class="filter-btn" data-filter="residential">Residential</button>
+        <button class="filter-btn" data-filter="infrastructure">Infrastructure</button>
+        <button class="filter-btn" data-filter="commercial">Commercial</button>
+      </div>
+
+      <div class="gallery-masonry" id="galleryGrid">
+        <!-- 12+ building images, all high-quality architecture -->
+        <div class="gallery-card tall" data-cat="cultural" data-img="https://images.pexels.com/photos/290595/pexels-photo-290595.jpeg?auto=compress&cs=tinysrgb&w=800&dpr=2" data-title="Atlas Muse · Mumbai" data-desc="Cultural center, marble & basalt, 2024">
+          <div class="gallery-img"><img src="https://images.pexels.com/photos/290595/pexels-photo-290595.jpeg?auto=compress&cs=tinysrgb&w=800&dpr=2" loading="lazy"><div class="gallery-overlay"><div class="expand-btn"><i class="fas fa-expand"></i></div></div></div>
+          <div class="gallery-card-body"><h3>Atlas Muse</h3><span class="g-tag">Cultural · 2024</span></div>
+        </div>
+        <div class="gallery-card" data-cat="residential" data-img="https://images.pexels.com/photos/1444442/pexels-photo-1444442.jpeg?auto=compress&cs=tinysrgb&w=800&dpr=2" data-title="Verte Tower · Singapore" data-desc="Bamboo composite residential">
+          <div class="gallery-img"><img src="https://images.pexels.com/photos/1444442/pexels-photo-1444442.jpeg?auto=compress&cs=tinysrgb&w=800&dpr=2" loading="lazy"><div class="gallery-overlay"><div class="expand-btn"><i class="fas fa-expand"></i></div></div></div>
+          <div class="gallery-card-body"><h3>Verte Tower</h3><span class="g-tag">Residential · 2025</span></div>
+        </div>
+        <div class="gallery-card" data-cat="infrastructure" data-img="https://images.pexels.com/photos/2161916/pexels-photo-2161916.jpeg?auto=compress&cs=tinysrgb&w=800&dpr=2" data-title="Aura Bridge · Copenhagen" data-desc="LED-integrated cable-stay">
+          <div class="gallery-img"><img src="https://images.pexels.com/photos/2161916/pexels-photo-2161916.jpeg?auto=compress&cs=tinysrgb&w=800&dpr=2" loading="lazy"><div class="gallery-overlay"><div class="expand-btn"><i class="fas fa-expand"></i></div></div></div>
+          <div class="gallery-card-body"><h3>Aura Bridge</h3><span class="g-tag">Infrastructure · 2026</span></div>
+        </div>
+        <div class="gallery-card tall" data-cat="commercial" data-img="https://images.pexels.com/photos/709392/pexels-photo-709392.jpeg?auto=compress&cs=tinysrgb&w=800&dpr=2" data-title="Pavilion 12 · Milano" data-desc="Kinetic skin, commercial">
+          <div class="gallery-img"><img src="https://images.pexels.com/photos/709392/pexels-photo-709392.jpeg?auto=compress&cs=tinysrgb&w=800&dpr=2" loading="lazy"><div class="gallery-overlay"><div class="expand-btn"><i class="fas fa-expand"></i></div></div></div>
+          <div class="gallery-card-body"><h3>Pavilion 12</h3><span class="g-tag">Commercial · 2026</span></div>
+        </div>
+        <div class="gallery-card" data-cat="residential" data-img="https://images.pexels.com/photos/16140165/pexels-photo-16140165/free-photo-of-modern-residential-tower-in-dubai.jpeg?auto=compress&cs=tinysrgb&w=800&dpr=2" data-title="Elysian · Dubai" data-desc="Residential spire">
+          <div class="gallery-img"><img src="https://images.pexels.com/photos/16140165/pexels-photo-16140165/free-photo-of-modern-residential-tower-in-dubai.jpeg?auto=compress&cs=tinysrgb&w=800&dpr=2" loading="lazy"><div class="gallery-overlay"><div class="expand-btn"><i class="fas fa-expand"></i></div></div></div>
+          <div class="gallery-card-body"><h3>Elysian</h3><span class="g-tag">Residential · 2025</span></div>
+        </div>
+        <div class="gallery-card" data-cat="cultural" data-img="https://images.pexels.com/photos/1108125/pexels-photo-1108125.jpeg?auto=compress&cs=tinysrgb&w=800&dpr=2" data-title="Nura Resort · Maldives" data-desc="Bioswale roofs">
+          <div class="gallery-img"><img src="https://images.pexels.com/photos/1108125/pexels-photo-1108125.jpeg?auto=compress&cs=tinysrgb&w=800&dpr=2" loading="lazy"><div class="gallery-overlay"><div class="expand-btn"><i class="fas fa-expand"></i></div></div></div>
+          <div class="gallery-card-body"><h3>Nura Resort</h3><span class="g-tag">Cultural · 2025</span></div>
+        </div>
+        <div class="gallery-card tall" data-cat="infrastructure" data-img="https://images.pexels.com/photos/442579/pexels-photo-442579.jpeg?auto=compress&cs=tinysrgb&w=800&dpr=2" data-title="Dawn Gate · Seoul" data-desc="Sculptural concrete gateway">
+          <div class="gallery-img"><img src="https://images.pexels.com/photos/442579/pexels-photo-442579.jpeg?auto=compress&cs=tinysrgb&w=800&dpr=2" loading="lazy"><div class="gallery-overlay"><div class="expand-btn"><i class="fas fa-expand"></i></div></div></div>
+          <div class="gallery-card-body"><h3>Dawn Gate</h3><span class="g-tag">Infrastructure · 2025</span></div>
+        </div>
+        <div class="gallery-card" data-cat="commercial" data-img="https://images.pexels.com/photos/3585256/pexels-photo-3585256.jpeg?auto=compress&cs=tinysrgb&w=800&dpr=2" data-title="Sky Vault · São Paulo" data-desc="Vertical forest">
+          <div class="gallery-img"><img src="https://images.pexels.com/photos/3585256/pexels-photo-3585256.jpeg?auto=compress&cs=tinysrgb&w=800&dpr=2" loading="lazy"><div class="gallery-overlay"><div class="expand-btn"><i class="fas fa-expand"></i></div></div></div>
+          <div class="gallery-card-body"><h3>Sky Vault</h3><span class="g-tag">Commercial · 2027</span></div>
+        </div>
+        <div class="gallery-card" data-cat="residential" data-img="https://images.pexels.com/photos/280229/pexels-photo-280229.jpeg?auto=compress&cs=tinysrgb&w=800&dpr=2" data-title="Coda Marina · Miami" data-desc="Fluid terraces">
+          <div class="gallery-img"><img src="https://images.pexels.com/photos/280229/pexels-photo-280229.jpeg?auto=compress&cs=tinysrgb&w=800&dpr=2" loading="lazy"><div class="gallery-overlay"><div class="expand-btn"><i class="fas fa-expand"></i></div></div></div>
+          <div class="gallery-card-body"><h3>Coda Marina</h3><span class="g-tag">Residential · 2025</span></div>
+        </div>
+        <div class="gallery-card tall" data-cat="cultural" data-img="https://images.pexels.com/photos/12949597/pexels-photo-12949597.jpeg?auto=compress&cs=tinysrgb&w=800&dpr=2" data-title="Zenith Plaza · Bangalore" data-desc="Mixed-use cultural hub">
+          <div class="gallery-img"><img src="https://images.pexels.com/photos/12949597/pexels-photo-12949597.jpeg?auto=compress&cs=tinysrgb&w=800&dpr=2" loading="lazy"><div class="gallery-overlay"><div class="expand-btn"><i class="fas fa-expand"></i></div></div></div>
+          <div class="gallery-card-body"><h3>Zenith Plaza</h3><span class="g-tag">Cultural · 2024</span></div>
+        </div>
+        <div class="gallery-card" data-cat="infrastructure" data-img="https://images.pexels.com/photos/323705/pexels-photo-323705.jpeg?auto=compress&cs=tinysrgb&w=800&dpr=2" data-title="Narmada Bridge · India" data-desc="Cable-stayed bridge">
+          <div class="gallery-img"><img src="https://images.pexels.com/photos/323705/pexels-photo-323705.jpeg?auto=compress&cs=tinysrgb&w=800&dpr=2" loading="lazy"><div class="gallery-overlay"><div class="expand-btn"><i class="fas fa-expand"></i></div></div></div>
+          <div class="gallery-card-body"><h3>Narmada Bridge</h3><span class="g-tag">Infrastructure · 2023</span></div>
+        </div>
+        <div class="gallery-card" data-cat="commercial" data-img="https://images.pexels.com/photos/1732414/pexels-photo-1732414.jpeg?auto=compress&cs=tinysrgb&w=800&dpr=2" data-title="Cyber Hub · Gurgaon" data-desc="Commercial complex">
+          <div class="gallery-img"><img src="https://images.pexels.com/photos/1732414/pexels-photo-1732414.jpeg?auto=compress&cs=tinysrgb&w=800&dpr=2" loading="lazy"><div class="gallery-overlay"><div class="expand-btn"><i class="fas fa-expand"></i></div></div></div>
+          <div class="gallery-card-body"><h3>Cyber Hub</h3><span class="g-tag">Commercial · 2024</span></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ABOUT page with Rohit Goud details -->
+  <div id="about" class="page">
+    <section class="page-section">
+      <div class="about-hero">
+        <div>
+          <span class="section-tag">Founder's legacy</span>
+          <h2 style="font-size:3rem;">Rohit <span class="gold">Goud</span></h2>
+          <p style="font-size:1.2rem; margin:24px 0;">Three decades of architectural poise — rooted in Pune, Maharashtra. PR Constructions is a legacy atelier of builders, dreamers and structural artists.</p>
+          <div class="address-block">
+            <i class="fas fa-map-pin gold" style="margin-right:8px;"></i> 
+            SR. NO. 26/1 SHIVSWARAJYA COLONY LANE NO. 2, URULI DEVACHI, NR. VAISHNAVI CITY PHASE II, ADARSH NAGAR, PUNE 412308
+          </div>
+          <p><i class="fas fa-phone-alt gold"></i> <strong>8080351701</strong> (direct line)</p>
+        </div>
+        <div class="about-portrait">
+          <img src="https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=800&dpr=2" alt="Rohit Goud" loading="lazy">
+        </div>
+      </div>
+      <div class="values-grid">
+        <div class="value-card"><i class="fas fa-scale-balanced"></i><h3>Integrity</h3><p>Uncompromising ethics, materials, and labor dignity.</p></div>
+        <div class="value-card"><i class="fas fa-leaf"></i><h3>Regenerative</h3><p>Beyond sustainability — we heal sites.</p></div>
+        <div class="value-card"><i class="fas fa-gem"></i><h3>Artesanal</h3><p>Stone, wood, metal — human touch.</p></div>
+        <div class="value-card"><i class="fas fa-handshake"></i><h3>Trust</h3><p>30+ years of client partnerships.</p></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- CONTACT page with full address & phone -->
+  <div id="contact" class="page">
+    <section class="page-section">
+      <span class="section-tag">Reach out</span>
+      <h2>Let's compose <span class="gold">your landmark</span></h2>
+      <div class="contact-grid">
+        <div class="contact-card">
+          <div class="contact-row"><i class="fas fa-user"></i><div><h4>Principal</h4><p><strong>Rohit Goud</strong><br>8080351701</p></div></div>
+          <div class="contact-row"><i class="fas fa-map-pin"></i><div><h4>Studio Address</h4><p>SR. NO. 26/1 SHIVSWARAJYA COLONY LANE NO. 2<br>URULI DEVACHI, NR. VAISHNAVI CITY PHASE II<br>ADARSH NAGAR, PUNE · MAHARASHTRA 412308</p></div></div>
+          <div class="contact-row"><i class="fas fa-phone-alt"></i><div><h4>Direct</h4><p>+91 8080351701</p></div></div>
+          <div class="contact-row"><i class="fas fa-envelope"></i><div><h4>Email</h4><p>contact@prconstructions.in</p></div></div>
+          <div class="contact-row"><i class="fas fa-clock"></i><div><h4>Office</h4><p>Mon–Fri 10:00 – 18:00 IST</p></div></div>
+        </div>
+        <div class="contact-scape">
+          <img src="https://images.pexels.com/photos/1108125/pexels-photo-1108125.jpeg?auto=compress&cs=tinysrgb&w=800&dpr=2" alt="PR office" loading="lazy">
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div><div class="footer-logo"><span class="logo-pr">PR</span> constructions</div><p style="color:#8f9fb0;">Pune · Since 1996</p></div>
+      <div><h4>Studio</h4><ul class="footer-links"><li><a href="#">Practice</a></li><li><a href="#">Sustainability</a></li></ul></div>
+      <div><h4>Projects</h4><ul class="footer-links"><li><a href="#">Cultural</a></li><li><a href="#">Residential</a></li></ul></div>
+      <div><h4>Contact</h4><ul class="footer-links"><li><a href="#">8080351701</a></li><li><a href="#">Pune 412308</a></li></ul></div>
+    </div>
+    <div class="copyright">© PR CONSTRUCTIONS · ROHIT GOUD · MODERN LEGACY</div>
+  </div>
+</footer>
+
+<!-- PAGE SCRIPT (navigation, filter, lightbox) -->
+<script>
+(function(){
+  // ----- PAGE SWITCH -----
+  const navLinks = document.querySelectorAll('.nav-link');
+  const pages = { home:document.getElementById('home'), gallery:document.getElementById('gallery'), about:document.getElementById('about'), contact:document.getElementById('contact') };
+  function activatePage(pageId){
+    Object.values(pages).forEach(p=>{ if(p){ p.style.display='none'; p.classList.remove('active-page'); } });
+    if(pages[pageId]){ pages[pageId].style.display='block'; pages[pageId].classList.add('active-page'); }
+    navLinks.forEach(l=>l.classList.remove('active'));
+    document.querySelectorAll('[data-page="'+pageId+'"]').forEach(l=>l.classList.add('active'));
+    document.getElementById('mobileMenu').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  navLinks.forEach(link=>link.addEventListener('click',function(e){
+    e.preventDefault(); let pageId=this.getAttribute('data-page'); if(pageId) activatePage(pageId);
+  }));
+
+  // hamburger
+  const ham = document.getElementById('hamburger');
+  const mob = document.getElementById('mobileMenu');
+  ham.addEventListener('click',()=>{ ham.classList.toggle('open'); mob.classList.toggle('open'); });
+
+  // ----- GALLERY FILTER -----
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const galleryCards = document.querySelectorAll('.gallery-card');
+  filterBtns.forEach(btn=>btn.addEventListener('click',function(){
+    filterBtns.forEach(b=>b.classList.remove('active')); this.classList.add('active');
+    let filter = this.getAttribute('data-filter');
+    galleryCards.forEach(c=>{
+      c.style.display = (filter==='all' || c.getAttribute('data-cat')===filter) ? 'block' : 'none';
+    });
+  }));
+
+  // ----- LIGHTBOX (with many images) -----
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lbImg');
+  const lbCaption = document.getElementById('lbCaption');
+  let currentIdx = 0, visibleCards = [];
+
+  function getVisible(){ return Array.from(galleryCards).filter(c=>c.style.display!=='none'); }
+
+  function openLightbox(idx){
+    visibleCards = getVisible();
+    if(!visibleCards.length) return;
+    currentIdx = (idx + visibleCards.length) % visibleCards.length;
+    let card = visibleCards[currentIdx];
+    lbImg.src = card.getAttribute('data-img');
+    lbCaption.textContent = card.getAttribute('data-title') + ' · ' + card.getAttribute('data-desc');
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  galleryCards.forEach(card=>{
+    card.addEventListener('click', ()=>{
+      visibleCards = getVisible();
+      let realIdx = visibleCards.indexOf(card);
+      openLightbox(realIdx);
+    });
+  });
+
+  document.getElementById('lbClose').onclick = ()=>{ lb.classList.remove('open'); document.body.style.overflow=''; };
+  document.getElementById('lbPrev').onclick = (e)=>{ e.stopPropagation(); openLightbox(currentIdx-1); };
+  document.getElementById('lbNext').onclick = (e)=>{ e.stopPropagation(); openLightbox(currentIdx+1); };
+
+  window.addEventListener('keydown',(e)=>{
+    if(!lb.classList.contains('open')) return;
+    if(e.key==='Escape') lb.classList.remove('open');
+    if(e.key==='ArrowRight') openLightbox(currentIdx+1);
+    if(e.key==='ArrowLeft') openLightbox(currentIdx-1);
+  });
+
+  // start with home
+  activatePage('home');
+})();
+</script>
+</body>
+</html>
